@@ -59,7 +59,7 @@ export default function Navbar() {
                 height={68}
                 priority
                 unoptimized
-                className="h-12 sm:h-14 w-auto object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-2xs"
+                className="!h-[80px] w-auto object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-2xs"
               />
             </div>
           </Link>
