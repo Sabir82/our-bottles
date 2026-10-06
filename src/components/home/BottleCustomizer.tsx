@@ -11,9 +11,11 @@ import {
   Palette,
   CheckCircle,
   MessageCircle,
+  Droplets,
 } from "lucide-react";
 import SectionHeading from "@/components/common/SectionHeading";
 import RealisticBottleMockup from "@/components/visual/RealisticBottleMockup";
+import { triggerWaterSplash } from "@/components/visual/WaterScrollCanvas";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 const COLOR_PRESETS = [
@@ -34,10 +36,11 @@ const FINISHES = [
 export default function BottleCustomizer() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bottleStageRef = useRef<HTMLDivElement>(null);
 
   // Customizer State
   const [size, setSize] = useState<"500ml" | "1000ml" | "250ml">("500ml");
-  const [brandName, setBrandName] = useState("APNA SIP WATER");
+  const [brandName, setBrandName] = useState("AQUVANA WATER");
   const [tagline, setTagline] = useState("Simple. Pure. Yours.");
   const [selectedColor, setSelectedColor] = useState(COLOR_PRESETS[0]);
   const [customHex, setCustomHex] = useState("#0B1B36");
@@ -45,6 +48,14 @@ export default function BottleCustomizer() {
   const [finish, setFinish] = useState<"matte" | "gloss" | "metallic">("matte");
   const [uploadedLogo, setUploadedLogo] = useState<string | null>("/logo-white.png");
   const [isDragging, setIsDragging] = useState(false);
+
+  // Trigger splash at bottle base
+  const triggerSplashAtBottle = (intensity = 1.3) => {
+    if (bottleStageRef.current) {
+      const rect = bottleStageRef.current.getBoundingClientRect();
+      triggerWaterSplash(rect.left + rect.width / 2, rect.bottom - 48, intensity);
+    }
+  };
 
   // Logo file handler
   const handleLogoUpload = (file: File) => {
@@ -94,7 +105,7 @@ export default function BottleCustomizer() {
         finish,
         hasUploadedLogo: Boolean(uploadedLogo),
       };
-      sessionStorage.setItem("apnasip_design_draft", JSON.stringify(designPayload));
+      sessionStorage.setItem("aquvana_design_draft", JSON.stringify(designPayload));
     }
     // Route to quote with parameters
     router.push(
@@ -260,7 +271,10 @@ export default function BottleCustomizer() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <button
                   type="button"
-                  onClick={() => setSize("250ml")}
+                  onClick={() => {
+                    setSize("250ml");
+                    triggerSplashAtBottle(1.15);
+                  }}
                   className={`py-3 px-3 rounded-xl text-left border transition-all ${
                     size === "250ml"
                       ? "bg-white border-[#0B1220] ring-2 ring-[#0B1220] shadow-2xs"
@@ -277,7 +291,10 @@ export default function BottleCustomizer() {
 
                 <button
                   type="button"
-                  onClick={() => setSize("500ml")}
+                  onClick={() => {
+                    setSize("500ml");
+                    triggerSplashAtBottle(1.25);
+                  }}
                   className={`py-3 px-3 rounded-xl text-left border transition-all ${
                     size === "500ml"
                       ? "bg-white border-[#0B1220] ring-2 ring-[#0B1220] shadow-2xs"
@@ -294,7 +311,10 @@ export default function BottleCustomizer() {
 
                 <button
                   type="button"
-                  onClick={() => setSize("1000ml")}
+                  onClick={() => {
+                    setSize("1000ml");
+                    triggerSplashAtBottle(1.4);
+                  }}
                   className={`py-3 px-3 rounded-xl text-left border transition-all ${
                     size === "1000ml"
                       ? "bg-white border-[#0B1220] ring-2 ring-[#0B1220] shadow-2xs"
@@ -321,7 +341,10 @@ export default function BottleCustomizer() {
                   <button
                     key={f.id}
                     type="button"
-                    onClick={() => setFinish(f.id)}
+                    onClick={() => {
+                      setFinish(f.id);
+                      triggerSplashAtBottle(1.2);
+                    }}
                     className={`p-3 rounded-xl text-left border transition-all ${
                       finish === f.id
                         ? "bg-white border-[#0284c7] ring-1 ring-[#0284c7] shadow-2xs"
@@ -354,6 +377,7 @@ export default function BottleCustomizer() {
                       onClick={() => {
                         setSelectedColor(preset);
                         setUseCustomColor(false);
+                        triggerSplashAtBottle(1.25);
                       }}
                       className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all ${
                         isSelected
@@ -380,6 +404,7 @@ export default function BottleCustomizer() {
                     onChange={(e) => {
                       setCustomHex(e.target.value);
                       setUseCustomColor(true);
+                      triggerSplashAtBottle(1.1);
                     }}
                     className="w-7 h-7 rounded cursor-pointer border border-slate-300"
                   />
@@ -429,8 +454,27 @@ export default function BottleCustomizer() {
                 </span>
               </div>
 
-              {/* Dynamic Bottle Mockup */}
-              <div className="my-6">
+              {/* Dynamic Bottle Mockup with Interactive Water Splash */}
+              <div
+                ref={bottleStageRef}
+                onClick={(e) => triggerWaterSplash(e.clientX, e.clientY, 1.45)}
+                className="my-6 relative cursor-pointer group flex flex-col items-center select-none"
+                title="Click bottle for water splash"
+              >
+                {/* Ambient Hydrodynamic Water Splash Pedestal */}
+                <div className="absolute -bottom-2 w-52 h-14 pointer-events-none flex items-center justify-center -z-0">
+                  {/* Expanding animated water ripple rings */}
+                  <div
+                    className="absolute w-44 h-10 rounded-[100%] border border-[#38BDF8]/50 animate-ping opacity-60"
+                    style={{ animationDuration: "2.8s" }}
+                  />
+                  <div
+                    className="absolute w-32 h-7 rounded-[100%] border border-white/70 animate-ping opacity-70"
+                    style={{ animationDuration: "1.9s", animationDelay: "0.5s" }}
+                  />
+                  <div className="absolute w-48 h-12 rounded-[100%] bg-gradient-to-r from-transparent via-[#0284c7]/25 to-transparent blur-md" />
+                </div>
+
                 <RealisticBottleMockup
                   size={size}
                   brandName={brandName}
@@ -442,6 +486,12 @@ export default function BottleCustomizer() {
                   accentColor={activeAccent}
                   floating={true}
                 />
+
+                {/* Micro tooltip cue */}
+                <span className="mt-3 text-[10px] text-sky-400/90 font-medium inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-950/60 border border-sky-500/20 opacity-80 group-hover:opacity-100 transition-opacity">
+                  <Droplets className="w-3 h-3 text-[#38BDF8] animate-bounce" />
+                  Tap bottle for splash effect
+                </span>
               </div>
 
               {/* Simulation Notice Footer */}

@@ -19,7 +19,7 @@ interface RealisticBottleMockupProps {
 
 export default function RealisticBottleMockup({
   size = "500ml",
-  brandName = "APNA SIP WATER",
+  brandName = "AQUVANA WATER",
   tagline = "Simple. Pure. Yours.",
   logoUrl = "/logo-white.png",
   labelColor = "#0B1B36",
@@ -48,6 +48,7 @@ export default function RealisticBottleMockup({
       : logoUrl;
 
   const isWhiteLogo = effectiveLogo === "/logo-white.png";
+  const isBrandLogo = effectiveLogo === "/logo.png" || effectiveLogo === "/logo-white.png";
 
   // Dimensions configuration
   const bottleHeight = is1L ? 540 : is250ml ? 380 : 470;
@@ -305,7 +306,7 @@ export default function RealisticBottleMockup({
             {effectiveLogo ? (
               <div
                 className={`relative w-16 h-11 max-h-12 overflow-hidden flex items-center justify-center ${
-                  isWhiteLogo ? "" : "bg-white/95 rounded-lg p-1 shadow-2xs"
+                  isWhiteLogo || isBrandLogo ? "" : "bg-white/95 rounded-lg p-1 shadow-2xs"
                 }`}
               >
                 <Image

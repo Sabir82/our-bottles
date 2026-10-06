@@ -19,13 +19,13 @@ export default function Footer() {
             <Link
               href="/"
               className="inline-block group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0088FF] rounded-xl py-1"
-              aria-label="Apna Sip Water Home"
+              aria-label="Aquvana Water Home"
             >
               <Image
                 src="/logo-white.png"
-                alt="Apna Sip Water — Simple. Pure. Yours."
+                alt="Aquvana Water — Simple. Pure. Yours."
                 width={190}
-                height={62}
+                height={95}
                 unoptimized
                 className="h-14 sm:h-16 md:!h-[80px] w-auto max-w-[220px] sm:max-w-none object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-sm"
               />

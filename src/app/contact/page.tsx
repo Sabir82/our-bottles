@@ -6,7 +6,7 @@ import { SITE_CONFIG } from "@/config/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Contact Studio Desk | Apna Sip Water Rishikesh",
+  title: "Contact Studio Desk | Aquvana Water Rishikesh",
   description:
     "Let's create your bottle. Connect with our bespoke packaging studio in Tapovan, Rishikesh. We deliver custom water bottles across Rishikesh, Haridwar, Dehradun, and pan-India.",
 };

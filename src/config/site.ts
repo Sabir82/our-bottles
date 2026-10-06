@@ -1,12 +1,12 @@
 export const SITE_CONFIG = {
-  name: "Apna Sip Water",
-  shortName: "Apna Sip",
-  legalName: "Apna Sip Water LLP",
+  name: "Aquvana Water",
+  shortName: "Aquvana",
+  legalName: "Aquvana Water LLP",
   tagline: "Simple. Pure. Yours.",
   description:
-    "Apna Sip Water — Simple. Pure. Yours. Premium custom-branded packaged drinking water for luxury hotels, boutique resorts, fine-dining restaurants, destination weddings, and corporate events across Rishikesh, Haridwar, Dehradun, and India.",
-  url: "https://apnasipwater.com",
-  ogImage: "https://apnasipwater.com/logo.png",
+    "Aquvana Water — Simple. Pure. Yours. Premium custom-branded packaged drinking water for luxury hotels, boutique resorts, fine-dining restaurants, destination weddings, and corporate events across Rishikesh, Haridwar, Dehradun, and India.",
+  url: "https://aquvanawater.com",
+  ogImage: "https://aquvanawater.com/og-image.png",
   contact: {
     // Primary Desk (First Owner): Sales & Custom Mockups
     phone: "+91 90842 77705",
@@ -20,7 +20,7 @@ export const SITE_CONFIG = {
     whatsappSecondaryNumber: "918218086865", // International format without '+'
     secondaryDeskLabel: "Orders & Dispatch (Desk 2)",
 
-    email: "contact@apnasipwater.com",
+    email: "contact@aquvana.in",
     address: {
       hub: "Tapovan, Rishikesh",
       state: "Uttarakhand",
@@ -31,8 +31,8 @@ export const SITE_CONFIG = {
     officeHours: "Monday – Saturday: 9:00 AM – 7:30 PM IST",
   },
   social: {
-    instagram: "https://instagram.com/apnasipwater",
-    linkedin: "https://linkedin.com/company/apnasipwater",
+    instagram: "https://instagram.com/aquvanawater",
+    linkedin: "https://linkedin.com/company/aquvanawater",
   },
   nav: [
     { label: "Home", href: "/" },

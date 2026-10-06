@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
+import { SITE_CONFIG } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://apnasipwater.com";
+  const baseUrl = SITE_CONFIG.url;
   const lastModified = new Date();
 
   return [

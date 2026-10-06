@@ -31,14 +31,14 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Apna Sip Water | Custom Branded Drinking Water in Rishikesh",
-    template: "%s | Apna Sip Water",
+    default: "Aquvana Water | Custom Branded Drinking Water in Rishikesh",
+    template: "%s | Aquvana Water",
   },
   description:
-    "Apna Sip Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses across Rishikesh, Haridwar, Dehradun and India. Get a custom quote.",
+    "Aquvana Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses across Rishikesh, Haridwar, Dehradun and India. Get a custom quote.",
   keywords: [
-    "Apna Sip Water",
-    "Apna Sip",
+    "Aquvana Water",
+    "Aquvana",
     "custom water bottles Rishikesh",
     "branded water bottles Rishikesh",
     "customized water bottles Haridwar",
@@ -56,25 +56,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     url: SITE_CONFIG.url,
-    title: "Apna Sip Water | Custom Branded Drinking Water",
+    title: "Aquvana Water | Custom Branded Drinking Water",
     description:
-      "Apna Sip Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses. Get a custom quote.",
+      "Aquvana Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses. Get a custom quote.",
     siteName: SITE_CONFIG.name,
     images: [
       {
-        url: "/logo.png",
-        width: 1024,
-        height: 682,
-        alt: "Apna Sip Water — Simple. Pure. Yours.",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Aquvana Water — Simple. Pure. Yours.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Apna Sip Water | Custom Branded Drinking Water",
+    title: "Aquvana Water | Custom Branded Drinking Water",
     description:
-      "Apna Sip Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses.",
-    images: ["/logo.png"],
+      "Aquvana Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses.",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [

@@ -49,17 +49,17 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0088FF] rounded-lg py-1"
-            aria-label="Apna Sip Water Home"
+            aria-label="Aquvana Water Home"
           >
             <div className="relative h-14 sm:h-16 w-auto flex items-center py-1">
               <Image
                 src="/logo.png"
-                alt="Apna Sip Water — Simple. Pure. Yours."
+                alt="Aquvana Water — Simple. Pure. Yours."
                 width={200}
-                height={68}
+                height={100}
                 priority
                 unoptimized
-                className="!h-[80px] w-auto object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-2xs"
+                className="!h-[70px] sm:!h-[80px] w-auto object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-2xs"
               />
             </div>
           </Link>

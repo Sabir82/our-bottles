@@ -84,7 +84,7 @@ export default function BackgroundBottle({
           >
             <Image
               src="/images/luxury-bottle-bg.jpg"
-              alt="Apna Sip Water Luxury Bottle Ambient Background"
+              alt="Aquvana Water Luxury Bottle Ambient Background"
               fill
               sizes="(max-width: 768px) 340px, (max-width: 1200px) 460px, 560px"
               priority

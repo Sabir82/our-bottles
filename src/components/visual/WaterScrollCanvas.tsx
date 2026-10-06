@@ -16,12 +16,40 @@ interface DropletParticle {
   depth: number; // 0.4 to 1.0
 }
 
-interface Ripple {
+interface SplashRipple {
   x: number;
   y: number;
   r: number;
   maxR: number;
   alpha: number;
+  speed: number;
+  lineWidth: number;
+  color: string;
+}
+
+interface SplashParticle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  r: number;
+  alpha: number;
+  life: number;
+  maxLife: number;
+  color: string;
+}
+
+/**
+ * Global helper to trigger a realistic water splash anywhere on the screen
+ */
+export function triggerWaterSplash(x: number, y: number, intensity = 1) {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("aquvana-water-splash", {
+        detail: { x, y, intensity },
+      })
+    );
+  }
 }
 
 export default function WaterScrollCanvas() {
@@ -29,27 +57,27 @@ export default function WaterScrollCanvas() {
 
   // References for animation loop
   const dropletsRef = useRef<DropletParticle[]>([]);
-  const ripplesRef = useRef<Ripple[]>([]);
+  const ripplesRef = useRef<SplashRipple[]>([]);
+  const splashParticlesRef = useRef<SplashParticle[]>([]);
   const lastScrollYRef = useRef(0);
   const scrollVelocityRef = useRef(0);
   const animFrameIdRef = useRef<number | null>(null);
 
   // Initialize particles with medium-sized balanced droplets
   const initDroplets = useCallback((width: number, height: number) => {
-    // Balanced medium density: 48 droplets
-    const count = 48;
+    const count = 46;
     const droplets: DropletParticle[] = [];
 
     for (let i = 0; i < count; i++) {
-      const isResting = Math.random() > 0.38;
+      const isResting = Math.random() > 0.4;
       const depth = Math.random() * 0.5 + 0.5;
-      const baseOpacity = Math.random() * 0.2 + 0.48; // Medium opacity 0.48 - 0.68
+      const baseOpacity = Math.random() * 0.2 + 0.45;
 
       droplets.push({
         id: i,
         x: Math.random() * width,
         y: Math.random() * height,
-        r: (Math.random() * 2.2 + 1.8) * depth, // Medium droplet radius: 1.8px to 3.8px
+        r: (Math.random() * 2.2 + 1.8) * depth,
         vy: isResting ? 0 : Math.random() * 0.7 + 0.35,
         vx: 0,
         seed: Math.random() * 100,
@@ -63,36 +91,77 @@ export default function WaterScrollCanvas() {
     dropletsRef.current = droplets;
   }, []);
 
-  // Handle water splash ripple at coordinate
-  const createSplash = useCallback((x: number, y: number) => {
+  // Multi-tier physics-based water splash creation
+  const createSplash = useCallback((x: number, y: number, intensity = 1) => {
+    // 1. Primary fast sharp ripple
     ripplesRef.current.push({
       x,
       y,
-      r: 3.5,
-      maxR: 42 + Math.random() * 15,
-      alpha: 0.48,
+      r: 3,
+      maxR: (55 + Math.random() * 20) * intensity,
+      alpha: 0.85,
+      speed: 130 * intensity,
+      lineWidth: 2,
+      color: "rgba(56, 189, 248,",
     });
 
-    // Scatter 3-4 medium micro beads
-    const burstCount = 3 + Math.floor(Math.random() * 2);
-    for (let i = 0; i < burstCount; i++) {
+    // 2. Delayed secondary rebound wave
+    setTimeout(() => {
+      ripplesRef.current.push({
+        x,
+        y,
+        r: 2,
+        maxR: (40 + Math.random() * 15) * intensity,
+        alpha: 0.65,
+        speed: 90 * intensity,
+        lineWidth: 1.5,
+        color: "rgba(14, 165, 233,",
+      });
+    }, 70);
+
+    // 3. Inner shimmering caustic ring
+    ripplesRef.current.push({
+      x,
+      y,
+      r: 1,
+      maxR: 24 * intensity,
+      alpha: 0.7,
+      speed: 65 * intensity,
+      lineWidth: 2.2,
+      color: "rgba(255, 255, 255,",
+    });
+
+    // 4. Burst of arc-trajectory water droplets (fountain/crown effect)
+    const particleCount = Math.floor((18 + Math.random() * 10) * Math.min(intensity, 1.8));
+    for (let i = 0; i < particleCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const dist = Math.random() * 18 + 8;
-      const depth = Math.random() * 0.4 + 0.6;
-      dropletsRef.current.push({
-        id: Date.now() + Math.random(),
-        x: x + Math.cos(angle) * dist,
-        y: y + Math.sin(angle) * dist,
-        r: Math.random() * 1.8 + 1.4,
-        vy: Math.random() * 1.3 + 0.7,
-        vx: (Math.random() - 0.5) * 0.6,
-        seed: Math.random() * 100,
-        trail: [],
-        isResting: false,
-        opacity: 0.55,
-        depth,
+      // High initial burst speed with upward bias
+      const speed = (Math.random() * 140 + 70) * intensity;
+      const upwardBias = (Math.random() * 110 + 60) * intensity;
+
+      splashParticlesRef.current.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - upwardBias, // Arcs upwards first
+        r: (Math.random() * 2.2 + 1.2) * Math.min(intensity, 1.5),
+        alpha: 0.95,
+        life: 0,
+        maxLife: Math.random() * 0.45 + 0.55, // 0.55 - 1.0s lifespan
+        color: Math.random() > 0.35 ? "#38BDF8" : "#E0F2FE",
       });
     }
+
+    // 5. Also wake up nearby resting droplets
+    dropletsRef.current.forEach((drop) => {
+      const dx = drop.x - x;
+      const dy = drop.y - y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120 * intensity && drop.isResting) {
+        drop.isResting = false;
+        drop.vy = Math.random() * 1.6 + 0.8;
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -106,7 +175,6 @@ export default function WaterScrollCanvas() {
 
     initDroplets(width, height);
 
-    // Resize handler
     const handleResize = () => {
       if (!canvasRef.current) return;
       width = canvasRef.current.width = window.innerWidth;
@@ -114,13 +182,11 @@ export default function WaterScrollCanvas() {
       initDroplets(width, height);
     };
 
-    // AUTOMATIC ACTIVATION: Exactly 2 seconds after page is loaded, trigger medium water cascade
+    // Auto-splash after 1.8s welcome
     const autoStartTimer = setTimeout(() => {
-      // 1. Ripple in upper center
-      createSplash(window.innerWidth * 0.5, window.innerHeight * 0.32);
+      createSplash(window.innerWidth * 0.5, window.innerHeight * 0.28, 1.3);
 
-      // 2. Cascade down 15 medium-sized droplets
-      for (let s = 0; s < 15; s++) {
+      for (let s = 0; s < 12; s++) {
         setTimeout(() => {
           const depth = Math.random() * 0.5 + 0.5;
           dropletsRef.current.push({
@@ -136,30 +202,20 @@ export default function WaterScrollCanvas() {
             opacity: Math.random() * 0.18 + 0.5,
             depth,
           });
-        }, s * 50);
+        }, s * 55);
       }
+    }, 1800);
 
-      // 3. Wake up resting drops to trickle down
-      dropletsRef.current.forEach((drop) => {
-        if (drop.isResting && Math.random() < 0.35) {
-          drop.isResting = false;
-          drop.vy = Math.random() * 1.2 + 0.8;
-        }
-      });
-    }, 2000);
-
-    // Scroll listener: balanced medium velocity reaction
+    // Scroll impulse
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const deltaY = currentScrollY - lastScrollYRef.current;
       lastScrollYRef.current = currentScrollY;
 
-      // Downward scroll imparts medium downward cascade impulse
       if (deltaY > 0) {
         scrollVelocityRef.current = Math.min(scrollVelocityRef.current + deltaY * 0.12, 22);
 
-        // Spawn a medium droplet while scrolling down
-        if (deltaY > 4 && Math.random() < 0.45) {
+        if (deltaY > 5 && Math.random() < 0.4) {
           const depth = Math.random() * 0.5 + 0.5;
           dropletsRef.current.push({
             id: Date.now() + Math.random(),
@@ -175,38 +231,28 @@ export default function WaterScrollCanvas() {
             depth,
           });
         }
-
-        // Cause resting drops to break free and slide down
-        dropletsRef.current.forEach((drop) => {
-          if (drop.isResting && Math.random() < 0.06) {
-            drop.isResting = false;
-            drop.vy = Math.random() * 1.1 + 0.7;
-          }
-        });
       } else if (deltaY < 0) {
-        // Scrolling up gives gentle deceleration
         scrollVelocityRef.current = Math.max(scrollVelocityRef.current - 1.2, 0);
       }
     };
 
-    // Click / touch splash interaction
+    // Click splash interaction everywhere on screen
     const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.closest("button") ||
-        target.closest("a") ||
-        target.closest("input") ||
-        target.closest("select") ||
-        target.closest("textarea")
-      ) {
-        return;
+      createSplash(e.clientX, e.clientY, 1.15);
+    };
+
+    // Custom event listener for components
+    const handleCustomSplash = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail && typeof detail.x === "number" && typeof detail.y === "number") {
+        createSplash(detail.x, detail.y, detail.intensity || 1.2);
       }
-      createSplash(e.clientX, e.clientY);
     };
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("click", handleClick);
+    window.addEventListener("aquvana-water-splash", handleCustomSplash);
 
     // Animation loop
     const ctx = canvas.getContext("2d");
@@ -218,7 +264,6 @@ export default function WaterScrollCanvas() {
       const dt = Math.min((currentTime - lastTime) / 1000, 0.1);
       lastTime = currentTime;
 
-      // Dampen scroll velocity smoothly
       scrollVelocityRef.current *= 0.92;
       if (scrollVelocityRef.current < 0.04) {
         scrollVelocityRef.current = 0;
@@ -226,60 +271,88 @@ export default function WaterScrollCanvas() {
 
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Draw ripples
+      // 1. Render Expanding Water Ripples
       for (let i = ripplesRef.current.length - 1; i >= 0; i--) {
         const ripple = ripplesRef.current[i];
-        ripple.r += 52 * dt;
-        ripple.alpha -= 0.58 * dt;
+        ripple.r += ripple.speed * dt;
+        ripple.alpha -= (1 / (ripple.maxR / ripple.speed)) * dt * 0.9;
 
-        if (ripple.alpha <= 0 || ripple.r >= ripple.maxR) {
+        if (ripple.alpha <= 0.01 || ripple.r >= ripple.maxR) {
           ripplesRef.current.splice(i, 1);
           continue;
         }
 
-        // Outer water ring
+        // Draw outer refraction wave
         ctx.beginPath();
         ctx.arc(ripple.x, ripple.y, ripple.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(34, 211, 238, ${ripple.alpha * 0.45})`;
-        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = `${ripple.color} ${Math.max(0, ripple.alpha)})`;
+        ctx.lineWidth = ripple.lineWidth;
         ctx.stroke();
 
-        // Inner refraction ring
+        // Shimmering highlight edge on upper-left quadrant
         ctx.beginPath();
-        ctx.arc(ripple.x, ripple.y, Math.max(0, ripple.r - 5), 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 255, 255, ${ripple.alpha * 0.55})`;
-        ctx.lineWidth = 0.9;
+        ctx.arc(ripple.x, ripple.y, Math.max(1, ripple.r - 2), Math.PI * 0.8, Math.PI * 1.6);
+        ctx.strokeStyle = `rgba(255, 255, 255, ${Math.max(0, ripple.alpha * 0.75)})`;
+        ctx.lineWidth = ripple.lineWidth * 0.8;
         ctx.stroke();
       }
 
-      // 2. Ambient occasional trickle
-      if (Math.random() < 0.016) {
-        const candidate = dropletsRef.current.find((d) => d.isResting);
-        if (candidate) {
-          candidate.isResting = false;
-          candidate.vy = 0.6 + Math.random() * 0.6;
+      // 2. Render Physics-based Splash Droplet Particles
+      const GRAVITY = 520; // downward acceleration in px/s^2
+      for (let i = splashParticlesRef.current.length - 1; i >= 0; i--) {
+        const p = splashParticlesRef.current[i];
+        p.life += dt;
+        if (p.life >= p.maxLife) {
+          splashParticlesRef.current.splice(i, 1);
+          continue;
         }
+
+        // Update physics
+        p.vy += GRAVITY * dt;
+        p.vx *= 0.985;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+
+        const progress = p.life / p.maxLife;
+        const currentAlpha = Math.max(0, (1 - progress) * p.alpha);
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const stretch = Math.min(1 + speed * 0.006, 2.4);
+        const angle = Math.atan2(p.vy, p.vx);
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(angle);
+        ctx.scale(stretch, 1 / Math.sqrt(stretch));
+
+        // Droplet body
+        ctx.beginPath();
+        ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(56, 189, 248, ${currentAlpha * 0.85})`;
+        ctx.fill();
+
+        // Bright white specular glint on droplet
+        ctx.beginPath();
+        ctx.arc(-p.r * 0.35, -p.r * 0.35, Math.max(0.6, p.r * 0.38), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha * 0.95})`;
+        ctx.fill();
+
+        ctx.restore();
       }
 
-      // Limit particle array size
+      // 3. Update & render ambient background glass droplets
       if (dropletsRef.current.length > 95) {
         dropletsRef.current.splice(0, dropletsRef.current.length - 95);
       }
 
-      // 3. Update & render droplets
       for (let i = dropletsRef.current.length - 1; i >= 0; i--) {
         const drop = dropletsRef.current[i];
 
         if (!drop.isResting) {
-          // Physics: gravity + medium scroll impulse + balanced terminal velocity
           const scrollBoost = scrollVelocityRef.current * 0.22 * drop.depth;
           drop.vy = Math.min(drop.vy + 0.1 * dt * 60 + scrollBoost * 0.07, 8.5);
-
-          // Organic gentle meander on glass surface
           drop.x += Math.sin(drop.y * 0.038 + drop.seed) * 0.38;
           drop.y += drop.vy * (dt * 60);
 
-          // Medium wet trail tracking
           if (drop.vy > 0.9 && Math.random() < 0.55) {
             drop.trail.push({
               x: drop.x,
@@ -292,7 +365,6 @@ export default function WaterScrollCanvas() {
             }
           }
 
-          // Off-screen recycle
           if (drop.y > height + 22) {
             drop.y = -10;
             drop.x = Math.random() * width;
@@ -302,11 +374,11 @@ export default function WaterScrollCanvas() {
           }
         }
 
-        // Draw soft, translucent wet trails
+        // Draw soft wet trails
         if (drop.trail.length > 1) {
           for (let t = 0; t < drop.trail.length; t++) {
             const tr = drop.trail[t];
-            tr.alpha *= 0.94; // gracefully evaporates
+            tr.alpha *= 0.94;
             if (tr.alpha > 0.02) {
               ctx.beginPath();
               ctx.arc(tr.x, tr.y, tr.r, 0, Math.PI * 2);
@@ -316,7 +388,7 @@ export default function WaterScrollCanvas() {
           }
         }
 
-        // Draw medium, realistic water droplet
+        // Draw realistic water droplet
         const { x, y, r, opacity } = drop;
         const stretch = drop.isResting ? 1 : Math.min(1 + drop.vy * 0.11, 1.55);
 
@@ -324,21 +396,14 @@ export default function WaterScrollCanvas() {
         ctx.translate(x, y);
         ctx.scale(1, stretch);
 
-        // A. Medium refraction shadow (bottom-right)
+        // Refraction shadow
         ctx.beginPath();
         ctx.arc(0.6, 0.9, r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(15, 23, 42, ${opacity * 0.12})`;
         ctx.fill();
 
-        // B. Main water droplet body (radial gradient)
-        const radGrad = ctx.createRadialGradient(
-          -r * 0.35,
-          -r * 0.35,
-          r * 0.08,
-          0,
-          0,
-          r
-        );
+        // Droplet body
+        const radGrad = ctx.createRadialGradient(-r * 0.35, -r * 0.35, r * 0.08, 0, 0, r);
         radGrad.addColorStop(0, `rgba(255, 255, 255, ${opacity * 0.9})`);
         radGrad.addColorStop(0.25, `rgba(224, 242, 254, ${opacity * 0.6})`);
         radGrad.addColorStop(0.7, `rgba(186, 230, 253, ${opacity * 0.36})`);
@@ -349,18 +414,18 @@ export default function WaterScrollCanvas() {
         ctx.fillStyle = radGrad;
         ctx.fill();
 
-        // C. Clean rim stroke
+        // Rim stroke
         ctx.strokeStyle = `rgba(2, 132, 199, ${opacity * 0.28})`;
         ctx.lineWidth = 0.55;
         ctx.stroke();
 
-        // D. Specular gloss glint
+        // Specular glint
         ctx.beginPath();
-        ctx.arc(-r * 0.35, -r * 0.35, Math.max(0.7, r * 0.3), 0, Math.PI * 2);
+        ctx.arc(-r * 0.35, -r * 0.35, Math.max(0.6, r * 0.38), 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, opacity * 1.15)})`;
         ctx.fill();
 
-        // E. Secondary micro reflection
+        // Secondary micro reflection
         ctx.beginPath();
         ctx.arc(r * 0.26, r * 0.3, Math.max(0.45, r * 0.18), 0, Math.PI * 2);
         ctx.fillStyle = `rgba(224, 242, 254, ${opacity * 0.6})`;
@@ -379,6 +444,7 @@ export default function WaterScrollCanvas() {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("click", handleClick);
+      window.removeEventListener("aquvana-water-splash", handleCustomSplash);
       if (animFrameIdRef.current) {
         cancelAnimationFrame(animFrameIdRef.current);
       }

@@ -108,11 +108,11 @@ export default function WhyChooseUs() {
             <div className="bg-white/10 border border-[#22D3EE]/30 rounded-2xl p-5 space-y-3 shadow-inner">
               <div className="flex items-center justify-between gap-3">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#22D3EE]">
-                  Apna Sip Custom Branded Water
+                  Aquvana Custom Branded Water
                 </div>
                 <Image
                   src="/logo-white.png"
-                  alt="Apna Sip Water"
+                  alt="Aquvana Water"
                   width={110}
                   height={36}
                   unoptimized

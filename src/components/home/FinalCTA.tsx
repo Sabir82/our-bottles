@@ -17,9 +17,9 @@ export default function FinalCTA() {
         <div className="flex justify-center mb-6">
           <Image
             src="/logo-white.png"
-            alt="Apna Sip Water — Simple. Pure. Yours."
+            alt="Aquvana Water — Simple. Pure. Yours."
             width={190}
-            height={62}
+            height={95}
             unoptimized
             className="!h-[90px] w-auto object-contain opacity-95 drop-shadow-sm"
           />

@@ -6,7 +6,7 @@ import RealisticBottleMockup from "@/components/visual/RealisticBottleMockup";
 import { PRODUCTS } from "@/data/products";
 
 export const metadata: Metadata = {
-  title: "Bottle Silhouettes & Label Finishes | Apna Sip Water",
+  title: "Bottle Silhouettes & Label Finishes | Aquvana Water",
   description:
     "Explore our 500ml, 1L, and 250ml bottle silhouettes. Engineered with crystal-clear BPA-free PET, waterproof luxury label finishes, and multi-barrier purification.",
 };

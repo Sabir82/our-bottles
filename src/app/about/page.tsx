@@ -13,9 +13,9 @@ import {
 import SectionHeading from "@/components/common/SectionHeading";
 
 export const metadata: Metadata = {
-  title: "About Our Studio & Bottling Craft | Apna Sip Water",
+  title: "About Our Studio & Bottling Craft | Aquvana Water",
   description:
-    "We help brands become part of the experience. Learn about Apna Sip Water — Simple. Pure. Yours. Located in Uttarakhand.",
+    "We help brands become part of the experience. Learn about Aquvana Water — Simple. Pure. Yours. Located in Uttarakhand.",
 };
 
 export default function AboutPage() {
@@ -70,13 +70,13 @@ export default function AboutPage() {
               The Hospitality Thesis
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B1220] font-heading">
-              Why We Founded Apna Sip Water
+              Why We Founded Aquvana Water
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               When guests arrive at a resort in Rishikesh after a long journey, sit down at a fine-dining table in Dehradun, or attend a destination wedding ceremony along the Ganga in Haridwar, one of the first objects handed to them is a water bottle.
             </p>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Traditional commercial packaged water promotes someone else’s brand on your tables. We built Apna Sip Water to give hotels, restaurants, planners, and corporate leaders an accessible, reliable, and premium pathway to own that critical touchpoint.
+              Traditional commercial packaged water promotes someone else’s brand on your tables. We built Aquvana Water to give hotels, restaurants, planners, and corporate leaders an accessible, reliable, and premium pathway to own that critical touchpoint.
             </p>
 
             <div className="pt-2 flex flex-wrap gap-4 text-xs font-semibold text-slate-700">

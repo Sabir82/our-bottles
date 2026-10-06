@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck, MapPin } from "lucide-react";
+import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck, MapPin, Droplets } from "lucide-react";
 import RealisticBottleMockup from "@/components/visual/RealisticBottleMockup";
+import { triggerWaterSplash } from "@/components/visual/WaterScrollCanvas";
 
 const SAMPLE_PREVIEWS = [
   {
-    name: "APNA SIP WATER",
+    name: "AQUVANA WATER",
     tagline: "Simple. Pure. Yours.",
     logoUrl: "/logo-white.png",
     size: "500ml" as const,
@@ -56,7 +57,7 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00A3FF] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00A3FF]" />
               </span>
-              <span>Apna Sip Water • Himalayan Purity & Custom Bottling Studio</span>
+              <span>Aquvana Water • Himalayan Purity & Custom Bottling Studio</span>
             </div>
 
             {/* Main Headline */}
@@ -102,7 +103,10 @@ export default function Hero() {
                   {SAMPLE_PREVIEWS.map((sample, idx) => (
                     <button
                       key={sample.name}
-                      onClick={() => setActiveSampleIndex(idx)}
+                      onClick={(e) => {
+                        setActiveSampleIndex(idx);
+                        triggerWaterSplash(e.clientX, e.clientY, 1.25);
+                      }}
                       className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all ${
                         activeSampleIndex === idx
                           ? "bg-[#0B1220] text-white shadow-xs"
@@ -145,8 +149,24 @@ export default function Hero() {
                 </span>
               </div>
 
-              {/* Dynamic Bottle Mockup Component */}
-              <div className="my-2">
+              {/* Dynamic Bottle Mockup Component with Splash */}
+              <div
+                onClick={(e) => triggerWaterSplash(e.clientX, e.clientY, 1.45)}
+                className="my-2 relative cursor-pointer group flex flex-col items-center select-none"
+                title="Click bottle for water splash"
+              >
+                {/* Ambient Hydrodynamic Water Splash Pedestal */}
+                <div className="absolute -bottom-2 w-48 h-12 pointer-events-none flex items-center justify-center -z-0">
+                  <div
+                    className="absolute w-40 h-8 rounded-[100%] border border-[#38BDF8]/40 animate-ping opacity-60"
+                    style={{ animationDuration: "2.6s" }}
+                  />
+                  <div
+                    className="absolute w-28 h-6 rounded-[100%] border border-sky-400/50 animate-ping opacity-60"
+                    style={{ animationDuration: "1.8s", animationDelay: "0.4s" }}
+                  />
+                </div>
+
                 <RealisticBottleMockup
                   size={currentSample.size}
                   brandName={currentSample.name}
@@ -157,6 +177,11 @@ export default function Hero() {
                   accentColor={currentSample.accentColor}
                   floating={true}
                 />
+
+                <span className="mt-2 text-[10px] text-sky-700/80 font-medium inline-flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
+                  <Droplets className="w-3 h-3 text-[#0284c7] animate-bounce" />
+                  Tap bottle for splash
+                </span>
               </div>
 
               {/* Sub-card quick customizer teaser */}
