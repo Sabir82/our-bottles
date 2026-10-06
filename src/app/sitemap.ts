@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://aquacraftstudio.com";
+  const baseUrl = "https://apnasipwater.com";
   const lastModified = new Date();
 
   return [

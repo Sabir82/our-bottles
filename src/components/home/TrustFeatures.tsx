@@ -34,7 +34,7 @@ export default function TrustFeatures() {
   ];
 
   return (
-    <section className="py-16 sm:py-20 bg-white border-b border-slate-200/60">
+    <section className="py-16 sm:py-20 bg-white/70 backdrop-blur-[0.5px] border-b border-slate-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="The Hospitality Advantage"

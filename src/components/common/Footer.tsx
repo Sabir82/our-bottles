@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin, MessageCircle, ArrowUpRight } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
@@ -14,39 +15,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 pb-12 border-b border-slate-800">
           {/* Brand Info (2 cols) */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-white">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-[#22D3EE]"
-                >
-                  <path
-                    d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 9v6"
-                    stroke="#22D3EE"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-xl text-white tracking-tight font-heading">
-                  AquaCraft<span className="text-[#22D3EE]">.</span>
-                </span>
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-400">
-                  Bespoke Bottling Studio
-                </span>
-              </div>
+            <Link href="/" className="inline-block group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0088FF] rounded-xl py-1">
+              <Image
+                src="/logo-white.png"
+                alt="Apna Sip Water — Simple. Pure. Yours."
+                width={190}
+                height={62}
+                unoptimized
+                className="!h-[80px] w-auto object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-sm"
+              />
             </Link>
 
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">

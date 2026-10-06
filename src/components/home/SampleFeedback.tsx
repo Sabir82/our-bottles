@@ -26,7 +26,7 @@ export default function SampleFeedback() {
   return (
     <section
       id="testimonials"
-      className="py-16 sm:py-24 bg-[#F8FAFC] border-b border-slate-200/60 scroll-mt-16"
+      className="py-16 sm:py-24 bg-[#F8FAFC]/65 backdrop-blur-[0.5px] border-b border-slate-200/60 scroll-mt-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         

@@ -19,19 +19,35 @@ interface RealisticBottleMockupProps {
 
 export default function RealisticBottleMockup({
   size = "500ml",
-  brandName = "AURA RESORT",
-  tagline = "Himalayan Sanctuary • Rishikesh",
-  logoUrl = null,
-  labelColor = "#0B1220",
+  brandName = "APNA SIP WATER",
+  tagline = "Simple. Pure. Yours.",
+  logoUrl = "/logo-white.png",
+  labelColor = "#0B1B36",
   labelTextColor = "#FFFFFF",
   labelFinish = "matte",
-  capColor = "#0B1220",
-  accentColor = "#22D3EE",
+  capColor = "#0B1B36",
+  accentColor = "#00A3FF",
   className = "",
   floating = true,
 }: RealisticBottleMockupProps) {
   const is1L = size === "1000ml";
   const is250ml = size === "250ml";
+
+  // Automatically select white logo on dark labels and color logo on light labels
+  const isDarkLabel =
+    labelTextColor.toLowerCase() === "#ffffff" ||
+    labelTextColor.toLowerCase() === "#fff" ||
+    labelTextColor.toLowerCase() === "#f8fafc" ||
+    labelTextColor.toLowerCase().includes("fff");
+
+  const effectiveLogo =
+    logoUrl === "/logo.png" || logoUrl === "/logo-white.png"
+      ? isDarkLabel
+        ? "/logo-white.png"
+        : "/logo.png"
+      : logoUrl;
+
+  const isWhiteLogo = effectiveLogo === "/logo-white.png";
 
   // Dimensions configuration
   const bottleHeight = is1L ? 540 : is250ml ? 380 : 470;
@@ -286,14 +302,18 @@ export default function RealisticBottleMockup({
         >
           {/* Top Emblem / Logo */}
           <div className="flex flex-col items-center justify-center shrink-0">
-            {logoUrl ? (
-              <div className="relative w-12 h-12 max-h-12 overflow-hidden flex items-center justify-center bg-white/10 rounded-lg p-1">
+            {effectiveLogo ? (
+              <div
+                className={`relative w-16 h-11 max-h-12 overflow-hidden flex items-center justify-center ${
+                  isWhiteLogo ? "" : "bg-white/95 rounded-lg p-1 shadow-2xs"
+                }`}
+              >
                 <Image
-                  src={logoUrl}
+                  src={effectiveLogo}
                   alt={brandName}
-                  width={48}
-                  height={48}
-                  className="max-h-full max-w-full object-contain"
+                  width={64}
+                  height={44}
+                  className="max-h-full max-w-full object-contain drop-shadow-xs"
                   unoptimized
                 />
               </div>

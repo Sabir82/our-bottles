@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowRight, MessageCircle } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
@@ -47,40 +48,19 @@ export default function Navbar() {
           {/* Brand Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#22D3EE] rounded-lg"
-            aria-label="AquaCraft Studio Home"
+            className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0088FF] rounded-lg py-1"
+            aria-label="Apna Sip Water Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#0B1220] flex items-center justify-center text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-[#22D3EE]"
-              >
-                <path
-                  d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 9v6"
-                  stroke="#22D3EE"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-[#0B1220] font-heading leading-tight">
-                AquaCraft<span className="text-[#0284c7]">.</span>
-              </span>
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500">
-                Bespoke Bottling Studio
-              </span>
+            <div className="relative h-14 sm:h-16 w-auto flex items-center py-1">
+              <Image
+                src="/logo.png"
+                alt="Apna Sip Water — Simple. Pure. Yours."
+                width={200}
+                height={68}
+                priority
+                unoptimized
+                className="h-12 sm:h-14 w-auto object-contain transition-transform duration-200 group-hover:scale-104 drop-shadow-2xs"
+              />
             </div>
           </Link>
 

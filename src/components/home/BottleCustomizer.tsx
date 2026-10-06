@@ -37,13 +37,13 @@ export default function BottleCustomizer() {
 
   // Customizer State
   const [size, setSize] = useState<"500ml" | "1000ml" | "250ml">("500ml");
-  const [brandName, setBrandName] = useState("THE GRAND RESORT");
-  const [tagline, setTagline] = useState("Tapovan • Rishikesh");
+  const [brandName, setBrandName] = useState("APNA SIP WATER");
+  const [tagline, setTagline] = useState("Simple. Pure. Yours.");
   const [selectedColor, setSelectedColor] = useState(COLOR_PRESETS[0]);
-  const [customHex, setCustomHex] = useState("#0B1220");
+  const [customHex, setCustomHex] = useState("#0B1B36");
   const [useCustomColor, setUseCustomColor] = useState(false);
   const [finish, setFinish] = useState<"matte" | "gloss" | "metallic">("matte");
-  const [uploadedLogo, setUploadedLogo] = useState<string | null>(null);
+  const [uploadedLogo, setUploadedLogo] = useState<string | null>("/logo-white.png");
   const [isDragging, setIsDragging] = useState(false);
 
   // Logo file handler
@@ -94,7 +94,7 @@ export default function BottleCustomizer() {
         finish,
         hasUploadedLogo: Boolean(uploadedLogo),
       };
-      sessionStorage.setItem("aquacraft_design_draft", JSON.stringify(designPayload));
+      sessionStorage.setItem("apnasip_design_draft", JSON.stringify(designPayload));
     }
     // Route to quote with parameters
     router.push(
@@ -114,7 +114,7 @@ export default function BottleCustomizer() {
   return (
     <section
       id="bottle-customizer"
-      className="py-16 sm:py-24 bg-white border-b border-slate-200/60 scroll-mt-16"
+      className="py-16 sm:py-24 bg-white/70 backdrop-blur-[0.5px] border-b border-slate-200/60 scroll-mt-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading

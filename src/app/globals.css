@@ -53,6 +53,31 @@ body {
   }
 }
 
+/* Ambient Background Bottle Wandering Animation ("Moving Here and There") */
+@keyframes bottleWanderHereAndThere {
+  0% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  16% {
+    transform: translate(38px, -26px) rotate(2.4deg);
+  }
+  33% {
+    transform: translate(-34px, 24px) rotate(-2deg);
+  }
+  50% {
+    transform: translate(42px, 32px) rotate(2.8deg);
+  }
+  68% {
+    transform: translate(-38px, -22px) rotate(-2.5deg);
+  }
+  84% {
+    transform: translate(22px, -32px) rotate(1.6deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
 @keyframes gentlePulse {
   0%, 100% {
     opacity: 0.35;
@@ -68,12 +93,18 @@ body {
   animation: bottleFloat 6s ease-in-out infinite;
 }
 
+.animate-bottle-wander {
+  animation: bottleWanderHereAndThere 18s ease-in-out infinite;
+  will-change: transform;
+}
+
 .animate-gentle-pulse {
   animation: gentlePulse 8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-bottle-float,
+  .animate-bottle-wander,
   .animate-gentle-pulse {
     animation: none !important;
   }

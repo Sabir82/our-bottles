@@ -7,8 +7,18 @@ import RealisticBottleMockup from "@/components/visual/RealisticBottleMockup";
 
 const SAMPLE_PREVIEWS = [
   {
+    name: "APNA SIP WATER",
+    tagline: "Simple. Pure. Yours.",
+    logoUrl: "/logo-white.png",
+    size: "500ml" as const,
+    labelColor: "#0B1B36",
+    labelTextColor: "#FFFFFF",
+    accentColor: "#00A3FF",
+  },
+  {
     name: "The Glasshouse",
     tagline: "Boutique Resort • Rishikesh",
+    logoUrl: null,
     size: "500ml" as const,
     labelColor: "#0B1220",
     labelTextColor: "#FFFFFF",
@@ -17,18 +27,11 @@ const SAMPLE_PREVIEWS = [
   {
     name: "The Olive Table",
     tagline: "Artisan Bistro & Cafe",
+    logoUrl: null,
     size: "500ml" as const,
     labelColor: "#1E293B",
     labelTextColor: "#F8FAFC",
     accentColor: "#38BDF8",
-  },
-  {
-    name: "Rhea & Kabir",
-    tagline: "Destination Wedding • 2026",
-    size: "500ml" as const,
-    labelColor: "#3B0764",
-    labelTextColor: "#FAF5FF",
-    accentColor: "#F472B6",
   },
 ];
 
@@ -37,9 +40,9 @@ export default function Hero() {
   const currentSample = SAMPLE_PREVIEWS[activeSampleIndex];
 
   return (
-    <section className="relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-slate-200/60 bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC]">
+    <section className="relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-slate-200/60 bg-gradient-to-b from-[#F8FAFC]/60 via-white/40 to-[#F8FAFC]/60 backdrop-blur-[0.5px]">
       {/* Subtle Ambient Background Gradients */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-sky-100/40 via-cyan-50/20 to-transparent blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-sky-100/30 via-cyan-50/15 to-transparent blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -50,10 +53,10 @@ export default function Hero() {
             {/* Location & Authority Eyebrow Badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-white text-xs font-semibold tracking-wide shadow-xs">
               <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22D3EE] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22D3EE]" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00A3FF] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00A3FF]" />
               </span>
-              <span>Bespoke Bottling Studio • Rishikesh, Haridwar & Dehradun</span>
+              <span>Apna Sip Water • Himalayan Purity & Custom Bottling Studio</span>
             </div>
 
             {/* Main Headline */}
@@ -148,6 +151,7 @@ export default function Hero() {
                   size={currentSample.size}
                   brandName={currentSample.name}
                   tagline={currentSample.tagline}
+                  logoUrl={currentSample.logoUrl}
                   labelColor={currentSample.labelColor}
                   labelTextColor={currentSample.labelTextColor}
                   accentColor={currentSample.accentColor}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
@@ -13,6 +14,17 @@ export default function FinalCTA() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-r from-[#22D3EE]/15 to-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo-white.png"
+            alt="Apna Sip Water — Simple. Pure. Yours."
+            width={190}
+            height={62}
+            unoptimized
+            className="!h-[90px] w-auto object-contain opacity-95 drop-shadow-sm"
+          />
+        </div>
+
         <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 text-[#22D3EE] text-xs font-bold uppercase tracking-wider mb-6 border border-white/10">
           <Sparkles className="w-3.5 h-3.5 text-[#22D3EE]" />
           Elevate Your Hospitality Presence

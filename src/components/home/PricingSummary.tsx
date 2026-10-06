@@ -7,7 +7,7 @@ import { PRICING_TIERS, PRICING_VARIABLES } from "@/data/pricing-tiers";
 
 export default function PricingSummary() {
   return (
-    <section id="pricing" className="py-16 sm:py-24 bg-[#F8FAFC] border-b border-slate-200/60">
+    <section id="pricing" className="py-16 sm:py-24 bg-[#F8FAFC]/65 backdrop-blur-[0.5px] border-b border-slate-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Transparent Tiered Structure"

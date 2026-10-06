@@ -253,7 +253,7 @@ export default function PricingPage() {
             <h3>Why We Don&apos;t Publish Deceptive Fixed Prices</h3>
           </div>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 max-w-3xl">
-            Generic commodity water companies quote flat prices by using cheap thin plastic, generic paper labels that peel off in ice buckets, and unverified filtration. At AquaCraft, we operate as a bespoke packaging studio:
+            Generic commodity water companies quote flat prices by using cheap thin plastic, generic paper labels that peel off in ice buckets, and unverified filtration. At Apna Sip Water, we operate as a bespoke packaging studio:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

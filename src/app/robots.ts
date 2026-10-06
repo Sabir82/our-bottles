@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://aquacraftstudio.com/sitemap.xml",
+    sitemap: "https://apnasipwater.com/sitemap.xml",
   };
 }

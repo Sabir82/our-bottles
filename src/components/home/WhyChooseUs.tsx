@@ -1,5 +1,6 @@
 import { Check, X, Shield, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import SectionHeading from "@/components/common/SectionHeading";
 
 export default function WhyChooseUs() {
@@ -31,7 +32,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-16 sm:py-24 bg-white border-b border-slate-200/60">
+    <section className="py-16 sm:py-24 bg-white/70 backdrop-blur-[0.5px] border-b border-slate-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="The Bespoke Difference"
@@ -105,8 +106,18 @@ export default function WhyChooseUs() {
 
             {/* Custom Branded Water */}
             <div className="bg-white/10 border border-[#22D3EE]/30 rounded-2xl p-5 space-y-3 shadow-inner">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#22D3EE]">
-                AquaCraft Custom Branded Water
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#22D3EE]">
+                  Apna Sip Custom Branded Water
+                </div>
+                <Image
+                  src="/logo-white.png"
+                  alt="Apna Sip Water"
+                  width={110}
+                  height={36}
+                  unoptimized
+                  className="h-6 w-auto object-contain opacity-95"
+                />
               </div>
               <ul className="space-y-2.5 text-xs text-slate-100">
                 <li className="flex items-start gap-2">
