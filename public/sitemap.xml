@@ -1,53 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.aquvana.in/</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.00</priority>
-    <image:image>
-      <image:loc>https://www.aquvana.in/og-image.png</image:loc>
-      <image:title>Aquvana Water — Simple. Pure. Yours.</image:title>
-      <image:caption>Bespoke custom-branded bottled water in Rishikesh, Haridwar, Dehradun</image:caption>
-    </image:image>
+    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.aquvana.in/products</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://www.aquvana.in/og-image.png</image:loc>
-      <image:title>Bottle Silhouettes and Finishes</image:title>
-      <image:caption>250ml Welcome, 500ml Dining, and 1L Suite bottles with waterproof luxury labels</image:caption>
-    </image:image>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.aquvana.in/pricing</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.aquvana.in/quote</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.aquvana.in/contact</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.aquvana.in/about</loc>
     <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.80</priority>
+    <priority>0.8</priority>
   </url>
 </urlset>
