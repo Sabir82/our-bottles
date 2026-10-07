@@ -119,6 +119,9 @@ export const metadata: Metadata = {
     address: true,
     telephone: true,
   },
+  verification: {
+    google: "ts0NHQlE1iZw4dOG2ufOJOSUWmlduCGSonkxuF_4mN8",
+  },
 };
 
 const organizationSchema = {
@@ -173,6 +176,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakarta.variable} ${inter.variable}`}>
       <head>
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TG7KBQGV');`,
+          }}
+        />
+        {/* End Google Tag Manager */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -183,6 +197,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans bg-[#F8FAFC] text-[#020617] antialiased selection:bg-[#22D3EE]/20 selection:text-[#0B1220] relative">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TG7KBQGV"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
+
         {/* Subtle Luxury Bottle in Background with low opacity */}
         <BackgroundBottle opacity={0.24} />
 
