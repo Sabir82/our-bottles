@@ -71,7 +71,7 @@ export default function Hero() {
 
             {/* Supporting Copy */}
             <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-              Custom-branded drinking water designed for hotels, restaurants, weddings, events, and businesses. Turn a 30-minute guest hydration moment into an unforgettable signature brand touchpoint.
+              Custom-branded drinking water designed for Hotels, Restaurants, Weddings, Events, and Businesses. Turn a 30-minute guest hydration moment into an unforgettable signature brand touchpoint.
             </p>
 
             {/* Action Buttons */}

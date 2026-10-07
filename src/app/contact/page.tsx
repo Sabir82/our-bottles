@@ -6,9 +6,99 @@ import { SITE_CONFIG } from "@/config/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
-  title: "Contact Studio Desk | Aquvana Water Rishikesh",
+  title: "Contact Studio Desk & Bottling Hub | Tapovan, Rishikesh | Aquvana Water",
   description:
-    "Let's create your bottle. Connect with our bespoke packaging studio in Tapovan, Rishikesh. We deliver custom water bottles across Rishikesh, Haridwar, Dehradun, and pan-India.",
+    "Connect directly with our packaging studio desks in Tapovan, Rishikesh. Phone: +91 90842 77705 / +91 82180 86865. Inquiries for luxury hotels, destination weddings, restaurants, and pan-India freight delivery.",
+  keywords: [
+    "contact Aquvana Water",
+    "custom water bottle supplier Tapovan Rishikesh phone number",
+    "branded water bottles Dehradun contact",
+    "wedding water bottle supplier Haridwar",
+    "Aquvana WhatsApp number",
+    "Aquvana email contact",
+    "custom bottle design inquiry",
+    "private label water bottle factory Uttarakhand",
+  ],
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/contact`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "Contact Studio Desk | Aquvana Water Rishikesh",
+    description:
+      "Connect with our bespoke packaging studio in Tapovan, Rishikesh. Inquiries for hotels, resorts, weddings, and enterprise bulk orders.",
+    url: `${SITE_CONFIG.url}/contact`,
+    siteName: SITE_CONFIG.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: `${SITE_CONFIG.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Contact Aquvana Water Studio Desk",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Aquvana Water Studio Desk",
+    description:
+      "Connect with our bespoke packaging studio in Tapovan, Rishikesh. Direct telephone, WhatsApp, and email.",
+    images: [`${SITE_CONFIG.url}/og-image.png`],
+  },
+};
+
+const contactPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact Aquvana Studio Desk",
+  url: `${SITE_CONFIG.url}/contact`,
+  mainEntity: {
+    "@type": "LocalBusiness",
+    name: "Aquvana",
+    telephone: [SITE_CONFIG.contact.phone, SITE_CONFIG.contact.phoneSecondary],
+    email: SITE_CONFIG.contact.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: SITE_CONFIG.contact.address.hub,
+      addressLocality: "Rishikesh",
+      addressRegion: SITE_CONFIG.contact.address.state,
+      postalCode: SITE_CONFIG.contact.address.pincode,
+      addressCountry: "IN",
+    },
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: `${SITE_CONFIG.url}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Contact",
+      item: `${SITE_CONFIG.url}/contact`,
+    },
+  ],
 };
 
 export default function ContactPage() {
@@ -17,6 +107,14 @@ export default function ContactPage() {
 
   return (
     <div className="py-12 sm:py-20 bg-[#F8FAFC]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Header */}

@@ -5,8 +5,8 @@ export const SITE_CONFIG = {
   tagline: "Simple. Pure. Yours.",
   description:
     "Aquvana Water — Simple. Pure. Yours. Premium custom-branded packaged drinking water for luxury hotels, boutique resorts, fine-dining restaurants, destination weddings, and corporate events across Rishikesh, Haridwar, Dehradun, and India.",
-  url: "https://aquvanawater.com",
-  ogImage: "https://aquvanawater.com/og-image.png",
+  url: "https://www.aquvana.in",
+  ogImage: "https://www.aquvana.in/og-image.png",
   contact: {
     // Primary Desk (First Owner): Sales & Custom Mockups
     phone: "+91 90842 77705",

@@ -64,6 +64,7 @@ export default function QuoteWizard() {
 
   // Wizard Steps
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Form State
@@ -81,6 +82,8 @@ export default function QuoteWizard() {
   const [logoFile, setLogoFile] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [quoteRecipient, setQuoteRecipient] = useState<"primary" | "secondary">("primary");
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
 
   // Auto-fill from query params or session storage
   useEffect(() => {
@@ -91,6 +94,43 @@ export default function QuoteWizard() {
     const brandParam = searchParams.get("brandName");
     if (brandParam) {
       setBusinessName(brandParam);
+    }
+    const qtyParam = searchParams.get("qty");
+    if (qtyParam) {
+      setQuantity(qtyParam);
+    }
+    const finishParam = searchParams.get("finish");
+    if (finishParam) {
+      setLabelFinish(finishParam);
+    }
+
+    // Auto-fill from Customizer session draft if available
+    if (typeof window !== "undefined") {
+      try {
+        const rawDraft = sessionStorage.getItem("aquvana_design_draft");
+        if (rawDraft) {
+          const draft = JSON.parse(rawDraft);
+          if (draft.brandName && !brandParam) setBusinessName(draft.brandName);
+          if (
+            draft.size &&
+            !sizeParam &&
+            ["500ml", "1000ml", "250ml"].includes(draft.size)
+          ) {
+            setBottleSize(draft.size);
+          }
+          if (draft.finish && !finishParam) {
+            setLabelFinish(
+              draft.finish === "matte"
+                ? "Ultra-Matte Velvet"
+                : draft.finish === "gloss"
+                ? "High-Gloss BOPP"
+                : "Metallic Foil Accent"
+            );
+          }
+        }
+      } catch {
+        // ignore
+      }
     }
   }, [searchParams]);
 
@@ -148,25 +188,138 @@ export default function QuoteWizard() {
     "secondary"
   );
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === 4) {
       if (!validateStep4()) return;
-      setIsSubmitted(true);
+      if (isSubmitting) return;
+
+      setIsSubmitting(true);
+      setSubmitError(null);
 
       const targetUrl =
         quoteRecipient === "secondary" ? waQuoteUrlLine2 : waQuoteUrlLine1;
+
+      // Extract customizer draft if present
+      let customizerDraft: any = null;
       if (typeof window !== "undefined") {
-        window.open(targetUrl, "_blank");
+        try {
+          const rawDraft = sessionStorage.getItem("aquvana_design_draft");
+          if (rawDraft) customizerDraft = JSON.parse(rawDraft);
+        } catch {
+          // ignore
+        }
+      }
+
+      const allFieldsPayload: Record<string, string> = {
+        "Occasion / Event Category":
+          occasion.charAt(0).toUpperCase() + occasion.slice(1),
+        "Bottle Silhouette": bottleSize,
+        "Order Quantity": `${quantity} Bottles`,
+        "Label Surface Finish": labelFinish,
+        "Contact Person": name,
+        "Business / Brand / Event": businessName,
+        "Primary Phone": phone,
+        "WhatsApp Number": whatsapp || phone,
+        "Email Address": email || "Not provided",
+        "Delivery Destination": location,
+        "Preferred Owner Line":
+          quoteRecipient === "secondary"
+            ? "Owner 2 (82180 86865)"
+            : "Owner 1 (90842 77705)",
+      };
+
+      if (customizerDraft) {
+        if (customizerDraft.brandName)
+          allFieldsPayload["Customizer Draft Brand"] = customizerDraft.brandName;
+        if (customizerDraft.tagline)
+          allFieldsPayload["Customizer Draft Tagline"] = customizerDraft.tagline;
+        if (customizerDraft.color)
+          allFieldsPayload["Customizer Label Color"] = customizerDraft.color;
+        if (customizerDraft.finish)
+          allFieldsPayload["Customizer Finish"] = customizerDraft.finish;
+      }
+
+      if (notes.trim()) {
+        allFieldsPayload["Client Notes & Special Requirements"] = notes;
       }
 
       try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
+        const response = await fetch("/api/enquiry", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pageName: "Custom Quote Wizard Page",
+            pageUrl:
+              typeof window !== "undefined"
+                ? window.location.href
+                : "https://www.aquvana.in/quote",
+            formName: "Bespoke Quote Wizard Form",
+            formType: "Quote Request",
+            name,
+            businessName,
+            phone,
+            whatsapp,
+            email,
+            bottleSize,
+            quantity,
+            labelStyle: labelFinish,
+            occasion,
+            location,
+            message:
+              notes ||
+              `Custom quote request for ${quantity} x ${bottleSize} (${occasion}).`,
+            logoDataUrl: logoFile,
+            selectedRecipient:
+              quoteRecipient === "secondary"
+                ? "Owner 2 (82180 86865)"
+                : "Owner 1 (90842 77705)",
+            customDesign: customizerDraft
+              ? {
+                  brandName: customizerDraft.brandName,
+                  tagline: customizerDraft.tagline,
+                  color: customizerDraft.color,
+                  finish: customizerDraft.finish,
+                }
+              : undefined,
+            honeypot,
+            fields: allFieldsPayload,
+          }),
         });
-      } catch {
-        // no-op if blocked
+
+        const result = await response.json().catch(() => ({}));
+
+        if (!response.ok || !result.success) {
+          throw new Error(
+            result.error ||
+              "We couldn't send your enquiry right now. Please try again or contact us directly."
+          );
+        }
+
+        setIsSubmitted(true);
+
+        if (typeof window !== "undefined") {
+          window.open(targetUrl, "_blank");
+        }
+
+        try {
+          confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 },
+          });
+        } catch {
+          // no-op if blocked
+        }
+      } catch (err: any) {
+        console.error("Quote submission error:", err);
+        setSubmitError(
+          err?.message ||
+            "We couldn't send your enquiry right now. Please try again or contact us directly."
+        );
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       setCurrentStep((prev) => prev + 1);
@@ -609,6 +762,25 @@ export default function QuoteWizard() {
               </button>
             </div>
           </div>
+
+          {submitError && (
+            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs sm:text-sm">
+              {submitError}
+            </div>
+          )}
+
+          {/* Anti-spam honeypot */}
+          <input
+            type="text"
+            name="website_url_hp"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            style={{ display: "none" }}
+            aria-hidden="true"
+          />
         </div>
       )}
 
@@ -626,7 +798,10 @@ export default function QuoteWizard() {
             <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0B1220] font-heading mt-3">
               Thank You, {name}!
             </h3>
-            <p className="text-sm text-slate-600 max-w-md mx-auto mt-2 leading-relaxed">
+            <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 font-semibold text-xs sm:text-sm max-w-md mx-auto mt-2.5">
+              Thank you! We&apos;ve received your enquiry. We&apos;ll get back to you shortly.
+            </div>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto mt-2 leading-relaxed">
               Your quotation for <strong className="text-slate-900">{businessName}</strong> has been prepared and opened in WhatsApp. Simply tap send in your WhatsApp window!
             </p>
           </div>
@@ -731,10 +906,15 @@ export default function QuoteWizard() {
           <button
             type="button"
             onClick={handleNext}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0B1220] text-white text-xs sm:text-sm font-bold hover:bg-slate-800 transition-all shadow-xs"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#0B1220] text-white text-xs sm:text-sm font-bold hover:bg-slate-800 transition-all shadow-xs disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <span>
-              {currentStep === 4 ? "Submit & Open on WhatsApp" : "Continue"}
+              {isSubmitting
+                ? "Sending Enquiry..."
+                : currentStep === 4
+                ? "Submit & Open on WhatsApp"
+                : "Continue"}
             </span>
             <ArrowRight className="w-4 h-4 text-[#22D3EE]" />
           </button>

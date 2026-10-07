@@ -25,7 +25,7 @@ export default function HowItWorksTimeline() {
     {
       num: "04",
       title: "We Produce & Deliver",
-      desc: "We process, bottle, seal, and dispatch your custom batch directly to your hotel, restaurant, or event venue across Uttarakhand or pan-India.",
+      desc: "We process, bottle, seal, and dispatch your custom batch directly to your Hotel, Restaurant, or Event Venue across Uttarakhand or pan-India.",
       tag: "Step 4: Fulfillment",
     },
   ];

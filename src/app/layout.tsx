@@ -12,14 +12,12 @@ const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-heading",
   display: "swap",
-  weight: ["500", "600", "700", "800"],
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600"],
 });
 
 export const viewport: Viewport = {
@@ -35,7 +33,7 @@ export const metadata: Metadata = {
     template: "%s | Aquvana Water",
   },
   description:
-    "Aquvana Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses across Rishikesh, Haridwar, Dehradun and India. Get a custom quote.",
+    "Aquvana Water — Simple. Pure. Yours. Premium custom-branded packaged drinking water bottles for luxury hotels, boutique resorts, fine-dining restaurants, destination weddings, and corporate events across Rishikesh, Haridwar, Dehradun, and India.",
   keywords: [
     "Aquvana Water",
     "Aquvana",
@@ -45,17 +43,27 @@ export const metadata: Metadata = {
     "custom water bottle printing Dehradun",
     "branded drinking water Uttarakhand",
     "hotel branded water bottles",
-    "wedding water bottles",
-    "event water bottles",
-    "corporate branded water",
+    "resort water bottles Rishikesh",
+    "wedding water bottles Uttarakhand",
+    "event water bottles Dehradun",
+    "corporate branded water bottles",
+    "custom packaged drinking water",
+    "private label water bottles India",
+    "personalized water bottles for events",
   ],
-  authors: [{ name: SITE_CONFIG.name }],
+  authors: [{ name: SITE_CONFIG.name, url: SITE_CONFIG.url }],
   creator: SITE_CONFIG.name,
+  publisher: SITE_CONFIG.legalName,
+  applicationName: SITE_CONFIG.name,
+  category: "Beverage Packaging & Hospitality Supplies",
   metadataBase: new URL(SITE_CONFIG.url),
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/`,
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: SITE_CONFIG.url,
+    url: `${SITE_CONFIG.url}/`,
     title: "Aquvana Water | Custom Branded Drinking Water",
     description:
       "Aquvana Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses. Get a custom quote.",
@@ -65,7 +73,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Aquvana Water — Simple. Pure. Yours.",
+        alt: "Aquvana Water — Simple. Pure. Yours. Custom Branded Water Bottles",
       },
     ],
   },
@@ -75,6 +83,7 @@ export const metadata: Metadata = {
     description:
       "Aquvana Water — Simple. Pure. Yours. Custom-branded drinking water bottles for hotels, restaurants, weddings, events and businesses.",
     images: ["/og-image.png"],
+    creator: "@aquvanawater",
   },
   icons: {
     icon: [
@@ -95,7 +104,65 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
+  formatDetection: {
+    email: true,
+    address: true,
+    telephone: true,
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Aquvana",
+  legalName: "Aquvana Water LLP",
+  url: "https://www.aquvana.in/",
+  logo: "https://www.aquvana.in/logo-blue.png",
+  email: "contact@aquvana.in",
+  telephone: "+91 90842 77705",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Tapovan, Rishikesh",
+    addressLocality: "Rishikesh",
+    addressRegion: "Uttarakhand",
+    postalCode: "249192",
+    addressCountry: "IN",
+  },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-90842-77705",
+      contactType: "sales",
+      areaServed: "IN",
+    },
+    {
+      "@type": "ContactPoint",
+      telephone: "+91-82180-86865",
+      contactType: "customer service",
+      areaServed: "IN",
+    },
+  ],
+  sameAs: [
+    "https://instagram.com/aquvanawater",
+    "https://linkedin.com/company/aquvanawater",
+  ],
+};
+
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Aquvana",
+  url: "https://www.aquvana.in/",
 };
 
 export default function RootLayout({
@@ -105,6 +172,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${plusJakarta.variable} ${inter.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+        />
+      </head>
       <body className="font-sans bg-[#F8FAFC] text-[#020617] antialiased selection:bg-[#22D3EE]/20 selection:text-[#0B1220] relative">
         {/* Subtle Luxury Bottle in Background with low opacity */}
         <BackgroundBottle opacity={0.24} />

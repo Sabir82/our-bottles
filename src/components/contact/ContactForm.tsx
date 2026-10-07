@@ -30,6 +30,8 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
 
   const handleLogoUpload = (file: File) => {
     const reader = new FileReader();
@@ -82,20 +84,73 @@ export default function ContactForm() {
     "secondary"
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    if (isSubmitting) return;
 
     setIsSubmitting(true);
+    setSubmitError(null);
 
     const targetUrl =
       selectedRecipient === "secondary" ? waContactUrlLine2 : waContactUrlLine1;
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pageName: "Contact Page",
+          pageUrl: typeof window !== "undefined" ? window.location.href : "https://www.aquvana.in/contact",
+          formName: "Contact Studio Desk Form",
+          formType: "Contact Enquiry",
+          name,
+          businessName,
+          phone,
+          whatsapp,
+          email,
+          bottleSize,
+          quantity,
+          location,
+          message,
+          logoDataUrl: logoFile,
+          selectedRecipient:
+            selectedRecipient === "secondary"
+              ? "Owner 2 (82180 86865)"
+              : "Owner 1 (90842 77705)",
+          honeypot,
+          fields: {
+            "Contact Person": name,
+            "Business / Brand": businessName,
+            "Phone Number": phone,
+            "WhatsApp Number": whatsapp || phone,
+            "Email Address": email || "Not provided",
+            "Bottle Silhouette": bottleSize,
+            "Estimated Quantity": `${quantity} Units`,
+            "Delivery Location": location,
+            "Preferred Owner Line":
+              selectedRecipient === "secondary"
+                ? "Owner 2 (82180 86865)"
+                : "Owner 1 (90842 77705)",
+            "Client Message / Notes": message,
+          },
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.error ||
+            "We couldn't send your enquiry right now. Please try again or contact us directly."
+        );
+      }
+
       setIsSubmitted(true);
 
-      // Automatically launch WhatsApp with the entire inquiry pre-filled!
+      // Launch WhatsApp with the entire inquiry pre-filled
       if (typeof window !== "undefined") {
         window.open(targetUrl, "_blank");
       }
@@ -105,7 +160,15 @@ export default function ContactForm() {
       } catch {
         // no-op
       }
-    }, 400);
+    } catch (err: any) {
+      console.error("Enquiry submission error:", err);
+      setSubmitError(
+        err?.message ||
+          "We couldn't send your enquiry right now. Please try again or contact us directly."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
@@ -122,7 +185,10 @@ export default function ContactForm() {
           <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0B1220] font-heading mt-3">
             Thank You, {name}!
           </h3>
-          <p className="text-sm text-slate-600 max-w-md mx-auto mt-2 leading-relaxed">
+          <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 font-semibold text-xs sm:text-sm max-w-md mx-auto mt-2.5">
+            Thank you! We&apos;ve received your enquiry. We&apos;ll get back to you shortly.
+          </div>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto mt-2 leading-relaxed">
             Your inquiry for <strong className="text-slate-900">{businessName}</strong> has been prepared and opened in WhatsApp. Simply tap send in your WhatsApp window!
           </p>
         </div>
@@ -427,15 +493,34 @@ export default function ContactForm() {
         </div>
       </div>
 
+      {submitError && (
+        <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs sm:text-sm">
+          {submitError}
+        </div>
+      )}
+
+      {/* Anti-spam honeypot */}
+      <input
+        type="text"
+        name="website_url_hp"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        style={{ display: "none" }}
+        aria-hidden="true"
+      />
+
       {/* Primary Action Button */}
       <div className="pt-2">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm sm:text-base font-bold shadow-md hover:shadow-lg transition-all active:scale-98 disabled:opacity-75"
+          className="w-full inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm sm:text-base font-bold shadow-md hover:shadow-lg transition-all active:scale-98 disabled:opacity-75 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
-            <span>Opening WhatsApp...</span>
+            <span>Sending Enquiry...</span>
           ) : (
             <>
               <MessageCircle className="w-5 h-5 text-white" />

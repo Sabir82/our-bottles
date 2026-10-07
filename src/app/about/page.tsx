@@ -11,11 +11,99 @@ import {
   Sparkles,
 } from "lucide-react";
 import SectionHeading from "@/components/common/SectionHeading";
+import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "About Our Studio & Bottling Craft | Aquvana Water",
+  title: "About Our Studio & Bottling Craft | Aquvana Water Rishikesh",
   description:
-    "We help brands become part of the experience. Learn about Aquvana Water — Simple. Pure. Yours. Located in Uttarakhand.",
+    "We help brands become part of the experience. Learn about Aquvana Water — Simple. Pure. Yours. Located in Tapovan, Rishikesh. Our 4-step workflow: Design, Production, Purification, and Direct Venue Delivery across Uttarakhand & India.",
+  keywords: [
+    "about Aquvana Water",
+    "custom water bottle company Rishikesh",
+    "packaged drinking water manufacturing Uttarakhand",
+    "hotel water bottle supplier Haridwar",
+    "customized wedding water manufacturer Dehradun",
+    "bespoke bottled water studio",
+    "hospitality amenities manufacturer India",
+    "Aquvana Water story",
+  ],
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/about`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "About Aquvana Water | Bespoke Bottling Studio in Rishikesh",
+    description:
+      "We help brands become part of the experience. Discover our packaging philosophy and 4-step production protocol in Uttarakhand.",
+    url: `${SITE_CONFIG.url}/about`,
+    siteName: SITE_CONFIG.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: `${SITE_CONFIG.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "About Aquvana Water — Studio and Bottling Craft",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Aquvana Water | Bottling Craft & Vision",
+    description:
+      "Bespoke private-label packaged drinking water crafted in Rishikesh, Uttarakhand.",
+    images: [`${SITE_CONFIG.url}/og-image.png`],
+  },
+};
+
+const aboutPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "About Aquvana",
+  url: `${SITE_CONFIG.url}/about`,
+  description:
+    "Learn about Aquvana, our bespoke packaging studio, and our mission to elevate hospitality branding with custom drinking water bottles.",
+  mainEntity: {
+    "@type": "Organization",
+    name: "Aquvana",
+    url: `${SITE_CONFIG.url}/`,
+    foundingLocation: {
+      "@type": "Place",
+      name: "Rishikesh, Uttarakhand, India",
+    },
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: `${SITE_CONFIG.url}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About Us",
+      item: `${SITE_CONFIG.url}/about`,
+    },
+  ],
 };
 
 export default function AboutPage() {
@@ -48,6 +136,14 @@ export default function AboutPage() {
 
   return (
     <div className="py-12 sm:py-20 bg-[#F8FAFC]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
         
         {/* Hero Section */}

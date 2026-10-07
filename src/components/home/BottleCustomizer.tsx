@@ -48,6 +48,7 @@ export default function BottleCustomizer() {
   const [finish, setFinish] = useState<"matte" | "gloss" | "metallic">("matte");
   const [uploadedLogo, setUploadedLogo] = useState<string | null>("/logo-white.png");
   const [isDragging, setIsDragging] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   // Trigger splash at bottle base
   const triggerSplashAtBottle = (intensity = 1.3) => {
@@ -60,9 +61,10 @@ export default function BottleCustomizer() {
   // Logo file handler
   const handleLogoUpload = (file: File) => {
     if (!file.type.startsWith("image/")) {
-      alert("Please upload a valid image file (.png, .jpg, .svg)");
+      setUploadError("Please upload an image file (.png, .jpg, .svg)");
       return;
     }
+    setUploadError(null);
     const reader = new FileReader();
     reader.onload = (e) => {
       setUploadedLogo(e.target?.result as string);
@@ -229,6 +231,9 @@ export default function BottleCustomizer() {
                     PNG, JPG, or SVG with transparent background recommended
                   </p>
                 </div>
+              )}
+              {uploadError && (
+                <p className="text-xs text-rose-500 mt-1.5">{uploadError}</p>
               )}
             </div>
 

@@ -4,16 +4,119 @@ import { ArrowRight, Check, Droplets, Sparkles, Layers, ShieldCheck } from "luci
 import SectionHeading from "@/components/common/SectionHeading";
 import RealisticBottleMockup from "@/components/visual/RealisticBottleMockup";
 import { PRODUCTS } from "@/data/products";
+import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Bottle Silhouettes & Label Finishes | Aquvana Water",
+  title: "Custom Bottle Silhouettes (250ml, 500ml, 1L) & Luxury Finishes | Aquvana Water",
   description:
-    "Explore our 500ml, 1L, and 250ml bottle silhouettes. Engineered with crystal-clear BPA-free PET, waterproof luxury label finishes, and multi-barrier purification.",
+    "Explore Aquvana's luxury bottle silhouettes: 250ml Welcome, 500ml Dining, and 1L Suite bottles. Featuring crystal-clear virgin PET, waterproof BOPP labels, metallic foil accents, and multi-barrier RO+UV purification.",
+  keywords: [
+    "custom water bottles 500ml",
+    "250ml customized water bottles",
+    "1 litre hotel water bottles",
+    "luxury bottle silhouettes Rishikesh",
+    "waterproof bottle labels Uttarakhand",
+    "metallic foil bottle label printing",
+    "virgin PET water bottles India",
+    "hotel dining water bottles",
+    "resort guest room water bottles",
+    "conference branded water bottles",
+    "private label water bottles Dehradun",
+    "Aquvana products",
+  ],
+  alternates: {
+    canonical: `${SITE_CONFIG.url}/products`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "Custom Bottle Silhouettes (250ml, 500ml, 1L) & Luxury Finishes | Aquvana Water",
+    description:
+      "Explore 250ml, 500ml, and 1L premium bottle silhouettes with waterproof matte, gloss, and metallic foil finishes for hotels, resorts, and events.",
+    url: `${SITE_CONFIG.url}/products`,
+    siteName: SITE_CONFIG.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: `${SITE_CONFIG.url}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Aquvana Water Bottle Silhouettes & Finishes",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Custom Bottle Silhouettes (250ml, 500ml, 1L) | Aquvana Water",
+    description:
+      "Engineered for distinction: crystal-clear virgin PET, waterproof luxury labels, and pristine RO+UV purified water.",
+    images: [`${SITE_CONFIG.url}/og-image.png`],
+  },
+};
+
+const productsListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Aquvana Custom Bottle Silhouettes",
+  itemListElement: PRODUCTS.map((product, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "Product",
+      name: `Aquvana ${product.name}`,
+      description: product.description,
+      brand: {
+        "@type": "Brand",
+        name: "Aquvana",
+      },
+      category: "Bespoke Packaged Drinking Water Bottle",
+      material: "Virgin BPA-Free PET",
+    },
+  })),
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: `${SITE_CONFIG.url}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Products",
+      item: `${SITE_CONFIG.url}/products`,
+    },
+  ],
 };
 
 export default function ProductsPage() {
   return (
     <div className="py-12 sm:py-20 bg-[#F8FAFC]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productsListSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 sm:space-y-24">
         
         {/* Page Header */}
